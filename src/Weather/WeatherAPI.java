@@ -62,15 +62,15 @@ public class WeatherAPI implements Runnable{
             JsonObject wind = (JsonObject) jsonObject.get("wind");
             double wind_speed = wind.get("speed").getAsDouble();
 
-            System.out.println("new temp is: " + temp + " older temp is: " + cityWeather.getLast_known_temp());
             if((Math.abs(temp - cityWeather.getLast_known_temp()) * 100) / cityWeather.getLast_known_temp() >= cityWeather.getThreshold())
-                System.out.println(String.format("temp was changed the temp was %f and now is: %f", cityWeather.getLast_known_temp(), temp));
+                System.out.printf("temp was changed the temp was %f and now is: %f%n", cityWeather.getLast_known_temp(), temp);
 
             cityWeather.setLast_known_temp(temp);
             cityWeather.setTimestamp(UnixToDate(dt));
             cityWeather.setWind_speed(wind_speed);
 
-
+            System.out.printf("time: %s, city name: %s, temp: %f, wind speed: %f%n", cityWeather.getTimestamp().toString(), cityWeather.getM_city_name(),
+                    cityWeather.getLast_known_temp(), cityWeather.getWind_speed());
             Thread.sleep((long) (cityWeather.getFreq() * 1000));//go to sleep
         }catch (IOException | InterruptedException e){
             System.out.println(e.getMessage());
